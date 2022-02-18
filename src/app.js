@@ -11,7 +11,7 @@ const jsonParser = express.json();
 app.use(urlencodedParser, rawParser, jsonParser);
 app.use('/users', userRouter);
 
-// app.post('/', (req, res) => req.)
+//app.post('/', (req, res) => res.)
 
 app.listen(PORT, () => {
   console.log(`server started on port = ${PORT}`);
