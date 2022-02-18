@@ -28,10 +28,14 @@ const Users = sequelize.define('users', {
     type: Seqelize.DATE,
     allowNull: false,
   },
+  role: {
+    type: Seqelize.STRING,
+    allowNull: false,
+  }
 });
 
-sequelize.sync().then((result) => {
-  console.log('Sequelize synchronized databse successfully!');
-});
+// sequelize.sync({force: true}).then((result) => {
+//   console.log('Sequelize synchronized databse successfully!');
+// });
 
 module.exports.Users = Users;
