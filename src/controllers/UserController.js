@@ -1,5 +1,7 @@
-const users = require('../database').Users;
+const users = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 class UserController {
   async signUp(request, response) {
@@ -38,7 +40,7 @@ class UserController {
     const userData = request.body;
     try {
       const user = await users.findOne({
-        attributes: ['password'],
+        attributes: ['id', 'fullName', 'email', 'dateOfBirth', 'password'],
         where: {
           email: userData.email,
         },
@@ -46,12 +48,17 @@ class UserController {
       if (user) {
         const isCorrectPassword = await bcrypt.compare(userData.password, user.dataValues.password);
         if (isCorrectPassword) {
-          response.json('You auth successfully!');
+          delete user.dataValues.password;
+          const token = jwt.sign(user.dataValues, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRES, });
+          response.status(200).json({
+            message: 'You auth successfully!',
+            token,
+          });
         } else {
-          response.json('Password incorrect!');
+          response.status(400).json('Password incorrect!');
         }
       } else {
-        response.json('Email incorrect!');
+        response.status(400).json('Email incorrect!');
       }
     } catch (e) {
       console.error(`Error: ${e.message}`);
@@ -73,7 +80,6 @@ class UserController {
   }
 
   async getUser(request, response) {
-    console.log(`${request.body.name} try to get user`);
     try {
       let user = await users.findOne({
         attributes: ['id', 'fullName', 'email', 'dateOfBirth', 'role'],
@@ -99,7 +105,7 @@ class UserController {
         },
       });
       result ? response.json('User deleted!') : response.json('User not deleted!');
-    } catch(e) {
+    } catch (e) {
       console.error(`Error: ${e.message}`);
       response.status(500).json('Something went wrong');
     }
@@ -108,19 +114,22 @@ class UserController {
   async updateUser(request, response) {
     try {
       const changedData = request.body;
+      if (changedData.hasOwnProperty('password')) {
+        changedData['password'] = await bcrypt.hash(changedData.password, 10);
+      }
       const result = await users.update(
         changedData,
         {
-        where: {
-          id: request.params.id,
-        },
-      });
+          where: {
+            id: request.params.id,
+          },
+        });
       result ? response.json('User updated!') : response.json('User not updated!');
-    } catch(e) {
+    } catch (e) {
       console.error(`Error: ${e.message}`);
       response.status(500).json('Something went wrong');
     }
   }
 }
 
-module.exports.UserController = new UserController();
+module.exports = new UserController();

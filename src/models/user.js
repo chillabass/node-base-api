@@ -19,6 +19,7 @@ const Users = sequelize.define('users', {
   email: {
     type: Seqelize.STRING,
     allowNull: false,
+    unique: true,
   },
   password: {
     type: Seqelize.STRING,
@@ -38,4 +39,4 @@ const Users = sequelize.define('users', {
 //   console.log('Sequelize synchronized databse successfully!');
 // });
 
-module.exports.Users = Users;
+module.exports = Users;
