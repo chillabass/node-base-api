@@ -1,8 +1,9 @@
+require('dotenv').config();
 const Seqelize = require('sequelize');
-const sequelize = new Seqelize('node-base', 'chillabass', '123456', {
-  dialect: 'postgres',
-  host: 'localhost',
-  port: 5432,
+const sequelize = new Seqelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+  dialect: process.env.DB_DIALECT,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
 });
 
 const Users = sequelize.define('users', {
@@ -15,11 +16,17 @@ const Users = sequelize.define('users', {
   fullName: {
     type: Seqelize.STRING,
     allowNull: false,
+    validate: {
+      is: /^[A-Za-zА-Яа-я -]+$/i
+    }
   },
   email: {
     type: Seqelize.STRING,
     allowNull: false,
     unique: true,
+    validate: {
+      isEmail: true
+    }
   },
   password: {
     type: Seqelize.STRING,
@@ -28,6 +35,9 @@ const Users = sequelize.define('users', {
   dateOfBirth: {
     type: Seqelize.DATE,
     allowNull: false,
+    validate: {
+      isDate: true, 
+    }
   },
   role: {
     type: Seqelize.STRING,

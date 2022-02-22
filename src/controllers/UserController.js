@@ -27,7 +27,7 @@ class UserController {
         }
         catch (e) {
           console.error(`Error: ${e.message}`);
-          response.status(500).json('Something went wrong');
+          response.status(500).json('Something went wrong: ' + e.message);
         }
       }
     } catch (e) {
