@@ -13,10 +13,10 @@ module.exports = async (request, response, next) => {
     if (userData.dataValues.id === +request.params.id) {
       next();
     } else {
-      response.status(400).json('You can only update your profile!');
+      response.status(403).json('You can only update your profile!');
     }
   } catch (e) {
     console.log(e.message);
-    response.status(403).json('Something went wrong!');
+    response.status(500).json('Something went wrong!');
   }
 }

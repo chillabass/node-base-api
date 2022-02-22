@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-class UserController {
-  async signUp(request, response) {
+module.exports = {
+  signUp: async function(request, response) {
     try {
       const data = request.body;
       const user = await users.findOne({
@@ -34,9 +34,9 @@ class UserController {
       console.error(`Error: ${e.message}`);
       response.status(500).json('Something went wrong');
     }
-  }
+  },
 
-  async auth(request, response) {
+  auth: async function (request, response) {
     const userData = request.body;
     try {
       const user = await users.findOne({
@@ -55,18 +55,18 @@ class UserController {
             token,
           });
         } else {
-          response.status(400).json('Password incorrect!');
+          response.status(400).json('Email or Password incorrect!');
         }
       } else {
-        response.status(400).json('Email incorrect!');
+        response.status(400).json('Email or Password incorrect!');
       }
     } catch (e) {
       console.error(`Error: ${e.message}`);
       response.status(500).json('Something went wrong');
     }
-  }
+  },
 
-  async getAll(request, response) {
+  getAll: async function (request, response) {
     try {
       const userList = await users.findAll({
         attributes: ['id', 'password', 'fullName', 'email', 'dateOfBirth', 'role'],
@@ -77,9 +77,9 @@ class UserController {
       console.error(`Error: ${e.message}`);
       response.status(500).json('Something went wrong');
     }
-  }
+  },
 
-  async getUser(request, response) {
+  getUser: async function (request, response) {
     try {
       let user = await users.findOne({
         attributes: ['id', 'fullName', 'email', 'dateOfBirth', 'role'],
@@ -88,16 +88,16 @@ class UserController {
       if (user) {
         response.status(200).json(user);
       } else {
-        response.status(409).json(`User not found!`);
+        response.status(400).json(`User not found!`);
       }
     }
     catch (e) {
       console.error(`Error: ${e.message}`);
       response.status(500).json('Something went wrong');
     }
-  }
+  },
 
-  async deleteUser(request, response) {
+  deleteUser: async function (request, response) {
     try {
       const result = await users.destroy({
         where: {
@@ -109,9 +109,9 @@ class UserController {
       console.error(`Error: ${e.message}`);
       response.status(500).json('Something went wrong');
     }
-  }
+  },
 
-  async updateUser(request, response) {
+  updateUser: async function (request, response) {
     try {
       const changedData = request.body;
       if (changedData.hasOwnProperty('password')) {
@@ -131,5 +131,3 @@ class UserController {
     }
   }
 }
-
-module.exports = new UserController();

@@ -12,9 +12,9 @@ module.exports = async (request, response, next) => {
   } catch (e) {
     console.log('isAuth: ' + e.message);
     if (e.message === 'jwt expired') {
-      response.status(403).json('You must be logged in!');
+      response.status(401).json('You must be logged in!');
     } else {
-      response.status(403).json('Something went wrong!');
+      response.status(500).json('Something went wrong!');
     }
   }
 }

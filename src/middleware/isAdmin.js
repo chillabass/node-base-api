@@ -12,10 +12,10 @@ module.exports = async (request, response, next) => {
     if (userData.dataValues.role === 'admin') {
       next();
     } else {
-      response.status(400).json('User not admin!');
+      response.status(403).json('User not admin!');
     }
   } catch (e) {
     console.log(e.message);
-    response.status(403).json('Something went wrong!');
+    response.status(500).json('Something went wrong!');
   }
 }
