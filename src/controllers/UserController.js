@@ -1,4 +1,4 @@
-const users = require('../../models/user');
+const users = require('../../models/index').sequelize.models.User;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -33,9 +33,10 @@ const signUp = async (request, response) => {
   }
 }
 
-const auth = async (request, response) => {
+const signIn = async (request, response) => {
   const { email, password } = request.body;
   try {
+    console.log(users)
     const user = await users.findOne({
       attributes: ['id', 'fullName', 'email', 'dateOfBirth', 'password'],
       where: {
@@ -128,7 +129,7 @@ const updateUser = async (request, response) => {
 
 module.exports = {
   signUp,
-  auth,
+  signIn,
   getAll,
   getUser,
   deleteUser,

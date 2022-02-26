@@ -7,7 +7,7 @@ const isUser = require('../middleware/isUser');
 // Регистрация
 router.post('/signup', userController.signUp);
 // Аутентификация
-router.post('/auth', userController.auth);
+router.post('/signin', userController.signIn);
 // Получить 1 пользователя
 router.get('/:id', isAuth, userController.getUser);
 // Получить всех пользователей

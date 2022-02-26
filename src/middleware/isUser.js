@@ -1,9 +1,9 @@
-const users = require('../models/user');
+const users = require('../../models/index').sequelize.models.User;
 const jwt = require('jsonwebtoken');
 
 module.exports = async (request, response, next) => {
   try {
-    const token = request.headers['authorization'];
+    const token = request.headers.authorization.split(' ')[1];;
     const decodeToken = jwt.decode(token);
     const userData = await users.findOne({
       where: {
