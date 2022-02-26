@@ -45,8 +45,4 @@ const Users = sequelize.define('users', {
   }
 });
 
-// sequelize.sync({force: true}).then((result) => {
-//   console.log('Sequelize synchronized databse successfully!');
-// });
-
 module.exports = Users;
