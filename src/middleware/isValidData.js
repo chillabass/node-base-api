@@ -25,6 +25,7 @@ module.exports = (request, response, next) => {
     }
     next();
   } catch (e) {
-
+    console.log(e.message);
+    response.status(500).json('Something went wrong!');
   }
 }
