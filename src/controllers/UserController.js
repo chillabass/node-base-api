@@ -36,7 +36,6 @@ const signUp = async (request, response) => {
 const signIn = async (request, response) => {
   const { email, password } = request.body;
   try {
-    console.log(users)
     const user = await users.findOne({
       attributes: ['id', 'fullName', 'email', 'dateOfBirth', 'password'],
       where: {
