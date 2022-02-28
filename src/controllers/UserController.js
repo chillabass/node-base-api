@@ -64,7 +64,7 @@ const signIn = async (request, response) => {
 const getAll = async (request, response) => {
   try {
     const userList = await users.findAll({
-      attributes: ['id', 'password', 'fullName', 'email', 'dateOfBirth', 'role'],
+      attributes: ['id', 'fullName', 'email', 'dateOfBirth', 'role'],
       raw: true
     });
     response.status(200).json(userList);
